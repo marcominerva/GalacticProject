@@ -1,20 +1,19 @@
 using AwesomeBackend.BusinessLayer.Services.Common;
-using AwesomeBackend.Common.Models.Responses;
 using AwesomeBackend.DataAccessLayer;
-using Microsoft.AspNetCore.Http;
+using AwesomeBackend.Shared.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Entities = AwesomeBackend.DataAccessLayer.Models;
+using Entities = AwesomeBackend.DataAccessLayer.Entities;
 
 namespace AwesomeBackend.BusinessLayer.Services
 {
     public class RatingsService : BaseService, IRatingsService
     {
-        public RatingsService(IApplicationDbContext dataContext, IHttpContextAccessor httpContextAccessor, ILogger<RatingsService> logger, IServiceProvider serviceProvider)
-            : base(dataContext, httpContextAccessor, logger, serviceProvider)
+        public RatingsService(IApplicationDbContext dataContext, ILogger<RatingsService> logger)
+            : base(dataContext, logger)
         {
         }
 
@@ -27,7 +26,7 @@ namespace AwesomeBackend.BusinessLayer.Services
 
             Logger.LogDebug("Found {ItemsCounts} ratings", totalCount);
 
-            var data = await query.Include(r => r.User)
+            var data = await query
                 .OrderByDescending(s => s.Date)
                 .Skip(pageIndex * itemsPerPage).Take(itemsPerPage + 1)      // Try to retrieve an element more than the requested number to check whether there are more data.
                 .Select(dbRating => new Rating
@@ -35,8 +34,7 @@ namespace AwesomeBackend.BusinessLayer.Services
                     Id = dbRating.Id,
                     RatingScore = dbRating.Score,
                     Comment = dbRating.Comment,
-                    Date = dbRating.Date,
-                    User = $"{dbRating.User.FirstName} {dbRating.User.LastName}".Trim()
+                    Date = dbRating.Date
                 }).ToListAsync();
 
             return new ListResult<Rating>(data.Take(itemsPerPage), totalCount, data.Count > itemsPerPage);
@@ -50,8 +48,7 @@ namespace AwesomeBackend.BusinessLayer.Services
                 RestaurantId = restaurantId,
                 Score = score,
                 Comment = comment,
-                Date = DateTime.UtcNow,
-                UserId = UserId.Value
+                Date = DateTime.UtcNow
             };
 
             DataContext.Insert(dbRating);

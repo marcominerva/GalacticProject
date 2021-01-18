@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AwesomeBackend.Common.Models.Responses
+namespace AwesomeBackend.Shared.Models.Responses
 {
     public class Rating
     {
@@ -11,7 +11,5 @@ namespace AwesomeBackend.Common.Models.Responses
         public string Comment { get; set; }
 
         public DateTime Date { get; set; }
-
-        public string User { get; set; }
     }
 }

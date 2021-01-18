@@ -11,9 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwesomeBackend.DataAccessLa
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "AwesomeBackend.Database", "AwesomeBackend.Database\AwesomeBackend.Database.sqlproj", "{9EEFCC54-1689-47FF-9064-EC4174E4E659}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwesomeBackend.Authentication", "AwesomeBackend.Authentication\AwesomeBackend.Authentication.csproj", "{AAAA1DCA-9F1C-44D9-824D-E1EF342FACF7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwesomeBackend.Common", "AwesomeBackend.Common\AwesomeBackend.Common.csproj", "{5ED31202-C53B-4630-82B6-6607C80EAFBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwesomeBackend.Shared", "AwesomeBackend.Shared\AwesomeBackend.Shared.csproj", "{5ED31202-C53B-4630-82B6-6607C80EAFBA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,10 +37,6 @@ Global
 		{9EEFCC54-1689-47FF-9064-EC4174E4E659}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EEFCC54-1689-47FF-9064-EC4174E4E659}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9EEFCC54-1689-47FF-9064-EC4174E4E659}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{AAAA1DCA-9F1C-44D9-824D-E1EF342FACF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAAA1DCA-9F1C-44D9-824D-E1EF342FACF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAAA1DCA-9F1C-44D9-824D-E1EF342FACF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAAA1DCA-9F1C-44D9-824D-E1EF342FACF7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5ED31202-C53B-4630-82B6-6607C80EAFBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5ED31202-C53B-4630-82B6-6607C80EAFBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5ED31202-C53B-4630-82B6-6607C80EAFBA}.Release|Any CPU.ActiveCfg = Release|Any CPU

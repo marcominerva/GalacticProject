@@ -1,12 +1,11 @@
-using AwesomeBackend.Authentication;
-using AwesomeBackend.DataAccessLayer.Models;
+using AwesomeBackend.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AwesomeBackend.DataAccessLayer
 {
-    public class ApplicationDbContext : AuthenticationDbContext, IApplicationDbContext
+    public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
         public DbSet<Restaurant> Restaurants { get; set; }
 

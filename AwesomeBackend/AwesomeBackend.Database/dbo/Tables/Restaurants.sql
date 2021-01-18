@@ -15,3 +15,6 @@
 	[Id] ASC
 ))
 GO
+
+ALTER TABLE [dbo].[Restaurants] ADD  CONSTRAINT [DF_Restaurants_CreatedAt]  DEFAULT (GETUTCDATE()) FOR [CreatedAt]
+GO

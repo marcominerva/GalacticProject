@@ -1,13 +1,8 @@
-﻿using AwesomeBackend.Authentication.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace AwesomeBackend.DataAccessLayer.Models
+namespace AwesomeBackend.DataAccessLayer.Entities
 {
     [Table("Ratings")]
     public class Rating
@@ -18,8 +13,6 @@ namespace AwesomeBackend.DataAccessLayer.Models
 
         public Guid RestaurantId { get; set; }
 
-        public Guid UserId { get; set; }
-
         public DateTime Date { get; set; }
 
         [Column("Rating")]
@@ -29,8 +22,5 @@ namespace AwesomeBackend.DataAccessLayer.Models
 
         [ForeignKey(nameof(RestaurantId))]
         public virtual Restaurant Restaurant { get; set; }
-
-        [ForeignKey(nameof(UserId))]
-        public virtual ApplicationUser User { get; set; }
     }
 }

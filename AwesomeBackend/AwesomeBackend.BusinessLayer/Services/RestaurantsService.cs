@@ -1,20 +1,19 @@
 using AwesomeBackend.BusinessLayer.Services.Common;
-using AwesomeBackend.Common.Models.Responses;
 using AwesomeBackend.DataAccessLayer;
-using Microsoft.AspNetCore.Http;
+using AwesomeBackend.Shared.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Entities = AwesomeBackend.DataAccessLayer.Models;
+using Entities = AwesomeBackend.DataAccessLayer.Entities;
 
 namespace AwesomeBackend.BusinessLayer.Services
 {
     public class RestaurantsService : BaseService, IRestaurantsService
     {
-        public RestaurantsService(IApplicationDbContext dataContext, IHttpContextAccessor httpContextAccessor, ILogger<RestaurantsService> logger, IServiceProvider serviceProvider)
-            : base(dataContext, httpContextAccessor, logger, serviceProvider)
+        public RestaurantsService(IApplicationDbContext dataContext, ILogger<RestaurantsService> logger)
+            : base(dataContext, logger)
         {
         }
 

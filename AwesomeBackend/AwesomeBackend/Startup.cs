@@ -1,11 +1,7 @@
-﻿using AwesomeBackend.Authentication;
-using AwesomeBackend.Authentication.Models;
-using AwesomeBackend.BusinessLayer.Services;
+﻿using AwesomeBackend.BusinessLayer.Services;
 using AwesomeBackend.DataAccessLayer;
 using AwesomeBackend.Documentation;
-using AwesomeBackend.Models;
 using Hellang.Middleware.ProblemDetails;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -17,16 +13,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace AwesomeBackend
@@ -54,8 +46,6 @@ namespace AwesomeBackend
         /// <param name="services">The collection of services to configure the application with.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
-
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {
@@ -69,40 +59,6 @@ namespace AwesomeBackend
                 {
                     providerOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 });
-            });
-
-            services.AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(connectionString));
-            services.AddIdentity<ApplicationUser, ApplicationRole>(setup =>
-            {
-                setup.Password.RequiredLength = 6;
-                setup.User.RequireUniqueEmail = true;
-            })
-            .AddEntityFrameworkStores<AuthenticationDbContext>();
-
-            // Get JWT token settings.
-            var jwtSection = Configuration.GetSection(nameof(JwtSettings));
-            var jwtSettings = jwtSection.Get<JwtSettings>();
-            services.Configure<JwtSettings>(jwtSection);
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(configureOptions =>
-            {
-                configureOptions.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidAudience = jwtSettings.Audience,
-                    ValidIssuer = jwtSettings.Issuer,
-                    ValidateAudience = true,
-                    ValidateIssuer = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(jwtSettings.SecurityKey)),
-                    RequireExpirationTime = true,
-                    //ClockSkew = TimeSpan.Zero // Default is 5 minutes
-                };
             });
 
             services.AddApiVersioning(options =>
@@ -128,29 +84,6 @@ namespace AwesomeBackend
             {
                 // Add a custom operation filter which sets default values
                 options.OperationFilter<SwaggerDefaultValues>();
-
-                options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Insert JWT token with the \"Bearer \" prefix",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                });
-
-                options.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = JwtBearerDefaults.AuthenticationScheme
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -223,8 +156,6 @@ namespace AwesomeBackend
                     options.RoutePrefix = string.Empty;
                 }
             });
-
-            app.UseSerilogRequestLogging();
 
             // Add the EndpointRoutingMiddleware.
             app.UseRouting();
