@@ -1,1 +1,1 @@
-# GalacticProject
+# Galactic Project
