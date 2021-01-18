@@ -37,7 +37,7 @@ namespace AwesomeBackend.BusinessLayer.Services
             var query = DataContext.GetData<Entities.Restaurant>();
             var totalCount = await query.LongCountAsync();
 
-            Logger.LogDebug("Found {ItemsCounts} restaurants", totalCount);
+            Logger.LogDebug("Found {ItemsCount} restaurants", totalCount);
 
             var data = await query.Include(r => r.Ratings)
                 .OrderBy(r => r.Name)
