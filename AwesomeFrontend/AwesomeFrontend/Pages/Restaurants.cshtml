@@ -1,0 +1,7 @@
+﻿@page "{id:guid}"
+@model RestaurantModel
+@{
+    ViewData["Title"] = Model.Restaurant.Name;
+}
+
+<h1 class="display-4">@Model.Restaurant.Name</h1>

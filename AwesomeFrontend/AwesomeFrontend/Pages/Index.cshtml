@@ -7,30 +7,43 @@
 <form method="get">
     <div class="form-row align-items-center justify-content-center mt-5">
         <div class="col-4">
-            <input type="text" class="form-control" placeholder="Search for a restaurant or a location" asp-for="@Model.SearchText">
+            <input type="text" name="q" class="form-control" placeholder="Search for a restaurant or a location" asp-for="@Model.SearchText">
         </div>
         <div class="col-auto ml-2">
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary"><i class="bi-search"></i> Search</button>
         </div>
     </div>
 </form>
 
 @if (Model.Restaurants != null)
 {
-    @*<div class="mt-5">
-        <div class="mt-5 card text-center mx-auto" style="width:300px">
-            <img class="card-img-top mx-auto" src="@Model.Weather.ConditionIconUrl" style="width:100px" alt="@Model.Weather.Condition">
-            <div class="card-body">
-                <h6 class="card-text">@Model.Weather.CityName</h6>
-                <h3 class="card-title">@Model.Weather.Condition</h3>
-                <h4 class="card-text">@Model.Weather.Temperature °C</h4>
-            </div>
-        </div>
-    </div>*@
+    <div class="list-group mt-5">
+        @foreach (var restaurant in Model.Restaurants.Content)
+        {
+            <a asp-page="Restaurants" asp-route-id="@restaurant.Id" class="list-group-item list-group-item-action">
+                <div class="media">
+                    <img src="@restaurant.ImageUrl" class="mr-3 restaurant-image rounded" alt="@restaurant.Name">
+                    <div class="media-body">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mt-0">@restaurant.Name</h5>
+                            @if (restaurant.RatingScore.HasValue)
+                            {
+                                <small>@restaurant.RatingScore</small>
+                            }
+                        </div>
+                        <p><i class="bi-map"></i> @restaurant.Address.ToString()</p>
+                        <p><i class="bi-telephone"></i> @restaurant.PhoneNumber</p>
+                        <p><i class="bi-mailbox"></i> @restaurant.Email</p>
+                    </div>
+                    
+                </div>
+            </a>
+        }
+    </div>
 }
 else if (!string.IsNullOrWhiteSpace(Model.SearchText))
 {
-    /* There is a city, but no weather data: there was a problem */
+    /* There is a city, but no results: there was a problem */
     <div class="alert alert-danger mt-5" role="alert">
         Unable to retrieve restaurants
     </div>

@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace AwesomeBackend.Shared.Models.Responses
 {
     public class ListResult<T>
     {
-        public IEnumerable<T> Content { get; }
+        public IEnumerable<T> Content { get; init; }
 
-        public bool HasNextPage { get; }
+        public bool HasNextPage { get; init; }
 
-        public long TotalCount { get; }
+        public long TotalCount { get; init; }
 
         public ListResult(IEnumerable<T> content, bool hasNextPage = false)
         {
@@ -18,13 +19,12 @@ namespace AwesomeBackend.Shared.Models.Responses
             HasNextPage = hasNextPage;
         }
 
+        [JsonConstructor]
         public ListResult(IEnumerable<T> content, long totalCount, bool hasNextPage = false)
         {
             Content = content;
             TotalCount = totalCount;
             HasNextPage = hasNextPage;
         }
-
-        public static ListResult<T> Empty => new ListResult<T>(new List<T>());
     }
 }

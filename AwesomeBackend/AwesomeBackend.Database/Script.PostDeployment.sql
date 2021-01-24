@@ -24,7 +24,7 @@ INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Add
 GO
 INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'72e07072-9bd4-e511-80c8-0003ff4b7a48', N'Pizza & Pasta', N'https://media-cdn.tripadvisor.com/media/photo-s/08/cb/bc/c2/pizza-napoletana-fantastica.jpg', N'18013', N'Largo Torino', N'Diano Marina', N'IM', N'+390183497951', NULL, NULL)
 GO
-INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'8c54a6b7-9bd4-e511-80c8-0003ff4b7a48', N'La Darsena', N'http://www.ristorante-ladarsena.it/images/darsena.jpg?731', N'18018', N'Via Lungomare di Levante, 213', N'Arma di Taggia', N'IM', N'+39018443579', NULL, NULL)
+INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'8c54a6b7-9bd4-e511-80c8-0003ff4b7a48', N'La Darsena', N'https://media-cdn.tripadvisor.com/media/photo-s/0a/b6/67/9d/la-darsena-ac.jpg', N'18018', N'Via Lungomare di Levante, 213', N'Arma di Taggia', N'IM', N'+39018443579', NULL, NULL)
 GO
 INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'ff57d9d9-9bd4-e511-80c8-0003ff4b7a48', N'The Pizza and the Furious da Nino', N'https://lh5.googleusercontent.com/p/AF1QipMllfU7DptkbfcmoSKypRqjJJ7FO9HllM-CXrPh=w208-h168-p-k-no', N'18018', N'Via Caboto, 21', N'Arma di Taggia', N'IM', N'+393773144834', N'pierrinino709@gmail.com', N'')
 GO
@@ -89,8 +89,6 @@ GO
 INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'da803061-3c94-49f8-8dd9-8be37a097d45', N'Orto', N'https://ordeatstorage.blob.core.windows.net/owners/da803061-3c94-49f8-8dd9-8be37a097d45/logo.jpg', N'18100', N'Piazza de Amicis, 13', N'Imperia', N'IM', N'0183960349', NULL, NULL)
 GO
 INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'c2d5d676-4d2d-4933-90dc-8da23846a6e5', N'TBSP Spot Ponte Milvio', N'https://ordeatstorage.blob.core.windows.net/owners/c2d5d676-4d2d-4933-90dc-8da23846a6e5/logo.png', N'00135', N'Piazzale di Ponte Milvio 12a', N'Roma', N'RM', N'', N'info@tbsp.it', N'www.tbsp.it')
-GO
-INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'52afa058-964d-4cfb-b1f0-9c93ac5f29c2', N'Istituto Istr. Sup. G. Ruffini', NULL, N'18100', N'Via Terre Bianche 2', N'Imperia', N'IM', N' NULL', NULL, NULL)
 GO
 INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'7e27df2a-23e3-4702-a024-b8b8b627e7e4', N'Chicken ''n Chicken Nice Delfino', N'https://ordeatstorage.blob.core.windows.net/owners/a31e8c1e-51f5-4b9c-a6a8-c5203d31ff95/logo.png', N'', N'16 Boulevard Gènèral Louis Delfino', N'Nice', N'', N'+340489143578', NULL, N'http://www.chickennchicken.com')
 GO

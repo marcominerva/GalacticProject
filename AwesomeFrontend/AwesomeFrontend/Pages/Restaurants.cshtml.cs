@@ -3,29 +3,33 @@ using AwesomeFrontend.BusinessLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace AwesomeFrontend.Pages
 {
-    public class IndexModel : PageModel
+    public class RestaurantModel : PageModel
     {
-        private readonly ILogger<IndexModel> logger;
+        private readonly ILogger<RestaurantModel> logger;
         private readonly IRestaurantsService restaurantsService;
 
         [BindProperty(SupportsGet = true, Name = "q")]
         public string SearchText { get; set; }
 
-        public ListResult<Restaurant> Restaurants { get; set; }
+        public Restaurant Restaurant { get; set; }
 
-        public IndexModel(ILogger<IndexModel> logger, IRestaurantsService restaurantsService)
+        public RestaurantModel(ILogger<RestaurantModel> logger, IRestaurantsService restaurantsService)
             => (this.logger, this.restaurantsService) = (logger, restaurantsService);
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            if (!string.IsNullOrWhiteSpace(SearchText))
+            if (id != Guid.Empty)
             {
-                Restaurants = await restaurantsService.GetAsync(SearchText);
+                Restaurant = await restaurantsService.GetAsync(id);
+                return Page();
             }
+
+            return NotFound();
         }
     }
 }

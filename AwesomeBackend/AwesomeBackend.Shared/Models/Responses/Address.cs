@@ -9,5 +9,11 @@
         public string Location { get; set; }
 
         public string Province { get; set; }
+
+        public override string ToString()
+        {
+            var address = $"{Street}, {PostalCode}, {Location} ({Province})";
+            return address;
+        }
     }
 }
