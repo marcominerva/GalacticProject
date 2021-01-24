@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwesomeFrontend", "AwesomeF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AwesomeBackend.Shared", "..\AwesomeBackend\AwesomeBackend.Shared\AwesomeBackend.Shared.csproj", "{2ADCB48F-69B4-4299-8090-351B3D77F1F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AwesomeFrontend.BusinessLayer", "AwesomeFrontend.BusinessLayer\AwesomeFrontend.BusinessLayer.csproj", "{CEE04379-8058-4ACC-9BE6-8EF6E329B1C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2ADCB48F-69B4-4299-8090-351B3D77F1F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ADCB48F-69B4-4299-8090-351B3D77F1F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ADCB48F-69B4-4299-8090-351B3D77F1F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE04379-8058-4ACC-9BE6-8EF6E329B1C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE04379-8058-4ACC-9BE6-8EF6E329B1C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE04379-8058-4ACC-9BE6-8EF6E329B1C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE04379-8058-4ACC-9BE6-8EF6E329B1C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,7 +4,35 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<form method="get">
+    <div class="form-row align-items-center justify-content-center mt-5">
+        <div class="col-4">
+            <input type="text" class="form-control" placeholder="Search for a restaurant or a location" asp-for="@Model.SearchText">
+        </div>
+        <div class="col-auto ml-2">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Restaurants != null)
+{
+    @*<div class="mt-5">
+        <div class="mt-5 card text-center mx-auto" style="width:300px">
+            <img class="card-img-top mx-auto" src="@Model.Weather.ConditionIconUrl" style="width:100px" alt="@Model.Weather.Condition">
+            <div class="card-body">
+                <h6 class="card-text">@Model.Weather.CityName</h6>
+                <h3 class="card-title">@Model.Weather.Condition</h3>
+                <h4 class="card-text">@Model.Weather.Temperature °C</h4>
+            </div>
+        </div>
+    </div>*@
+}
+else if (!string.IsNullOrWhiteSpace(Model.SearchText))
+{
+    /* There is a city, but no weather data: there was a problem */
+    <div class="alert alert-danger mt-5" role="alert">
+        Unable to retrieve restaurants
+    </div>
+}
+
