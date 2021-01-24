@@ -8,6 +8,6 @@ namespace AwesomeBackend.BusinessLayer.Services
     {
         Task<Restaurant> GetAsync(Guid id);
 
-        Task<ListResult<Restaurant>> GetAsync(int pageIndex, int itemsPerPage);
+        Task<ListResult<Restaurant>> GetAsync(string searchText, int pageIndex, int itemsPerPage);
     }
 }

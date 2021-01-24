@@ -44,7 +44,7 @@ INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Add
 GO
 INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'd31ac16d-edd7-e511-80c8-0003ff4b7faa', N'Ristorante Red Pepper', N'https://media-cdn.tripadvisor.com/media/photo-s/09/5a/c8/24/ristorante-pizzeria-red.jpg', N'18013', N'Corso Europa, 48', N'Diano Marina', N'IM', N'+390183493221', NULL, NULL)
 GO
-INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'd527ff04-2ae6-e511-80c7-0003ff4b7fac', N'Bar Gelateria Ligure', N'https://igx.4sqi.net/img/general/200x200/72114764_fRQUOUJzopWlFv8RppGhrpbBYn4GUqrQH59GwmKIbnk.jpg', N'18018', N'Piazza', N'Arma di Taggia', N'IM', N'', NULL, NULL)
+INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'd527ff04-2ae6-e511-80c7-0003ff4b7fac', N'Bar Gelateria Ligure', N'https://igx.4sqi.net/img/general/200x200/72114764_fRQUOUJzopWlFv8RppGhrpbBYn4GUqrQH59GwmKIbnk.jpg', N'18018', N'Piazza Chierotti', N'Arma di Taggia', N'IM', N'', NULL, NULL)
 GO
 INSERT [dbo].[Restaurants] ([Id], [Name], [ImageUrl], [Address_PostalCode], [Address_Street], [Address_Location], [Address_Province], [PhoneNumber], [Email], [WebSite]) VALUES (N'a6529310-ece6-e511-80c7-0003ff4b7fac', N'Piccolo Bar Antoine', N'https://media-cdn.tripadvisor.com/media/photo-s/07/ae/48/dd/romantica-terrazza-sul.jpg', N'18013', N'Via Aurelia Ovest', N'Diano Marina', N'IM', N'+390183498056', NULL, NULL)
 GO

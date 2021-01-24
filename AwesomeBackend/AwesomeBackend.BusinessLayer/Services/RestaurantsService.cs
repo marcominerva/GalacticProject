@@ -30,14 +30,16 @@ namespace AwesomeBackend.BusinessLayer.Services
             return restaurant;
         }
 
-        public async Task<ListResult<Restaurant>> GetAsync(int pageIndex, int itemsPerPage)
+        public async Task<ListResult<Restaurant>> GetAsync(string searchText, int pageIndex, int itemsPerPage)
         {
-            Logger.LogDebug("Trying to retrieve {ItemsCount} restaurants...", itemsPerPage);
+            Logger.LogDebug("Trying to retrieve a max of {ItemsCount} restaurants using {SearchText} query...", itemsPerPage, searchText);
 
-            var query = DataContext.GetData<Entities.Restaurant>();
+            var query = DataContext.GetData<Entities.Restaurant>()
+                .Where(r => searchText == null || r.Name.Contains(searchText) || r.Address.Location.Contains(searchText));
+
             var totalCount = await query.LongCountAsync();
 
-            Logger.LogDebug("Found {ItemsCount} restaurants", totalCount);
+            Logger.LogDebug("{ItemsCount} restaurants found", totalCount);
 
             var data = await query.Include(r => r.Ratings)
                 .OrderBy(r => r.Name)

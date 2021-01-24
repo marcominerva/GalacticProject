@@ -23,16 +23,18 @@ namespace AwesomeBackend.Controllers
         /// <summary>
         /// Get the paginated restaurants list
         /// </summary>
+        /// <param name="searchText">Part of the name or of the location of the restaurants to retrieve</param>
         /// <param name="pageIndex">The index of the page to get</param>
         /// <param name="itemsPerPage">The number of elements to get</param>
         /// <response code="200">The restaurants list</response>
         [HttpGet]
         [ProducesResponseType(typeof(ListResult<Restaurant>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<ListResult<Restaurant>>> GetRestaurantsList([FromQuery(Name = "page")] int pageIndex = 0,
+        public async Task<ActionResult<ListResult<Restaurant>>> GetRestaurantsList([FromQuery(Name = "q")] string searchText = null,
+                                                                                   [FromQuery(Name = "page")] int pageIndex = 0,
                                                                                    [FromQuery(Name = "size")] int itemsPerPage = 20)
         {
-            var restaurants = await restaurantsService.GetAsync(pageIndex, itemsPerPage);
+            var restaurants = await restaurantsService.GetAsync(searchText, pageIndex, itemsPerPage);
             return restaurants;
         }
 
