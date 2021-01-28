@@ -1,9 +1,13 @@
-﻿using AwesomeBackend.Shared.Models.Responses;
+﻿using AwesomeBackend.Shared.Models.Requests;
+using AwesomeBackend.Shared.Models.Responses;
 using AwesomeFrontend.BusinessLayer.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace AwesomeFrontend.Pages
@@ -13,10 +17,14 @@ namespace AwesomeFrontend.Pages
         private readonly ILogger<RestaurantModel> logger;
         private readonly IRestaurantsService restaurantsService;
 
-        [BindProperty(SupportsGet = true, Name = "q")]
-        public string SearchText { get; set; }
-
         public Restaurant Restaurant { get; set; }
+
+        public ListResult<Rating> Ratings { get; set; }
+
+        [BindProperty]
+        public RatingRequest RatingRequest { get; set; } = new RatingRequest();
+
+        public IEnumerable<SelectListItem> RatingScores { get; set; }
 
         public RestaurantModel(ILogger<RestaurantModel> logger, IRestaurantsService restaurantsService)
             => (this.logger, this.restaurantsService) = (logger, restaurantsService);
@@ -25,11 +33,29 @@ namespace AwesomeFrontend.Pages
         {
             if (id != Guid.Empty)
             {
-                Restaurant = await restaurantsService.GetAsync(id);
+                (Restaurant, Ratings) = await restaurantsService.GetAsync(id);
+
+                RatingScores = new List<SelectListItem>() { new("(select)", "-1") }.Union(
+                                    Enumerable.Range(1, 5).Select(x =>
+                                       new SelectListItem
+                                       {
+                                           Value = x.ToString(),
+                                           Text = x.ToString()
+                                       }));
+
                 return Page();
             }
 
             return NotFound();
+        }
+
+        public async Task<IActionResult> OnPostAsync(Guid id)
+        {
+            var rateResult = await restaurantsService.RateAsync(id, RatingRequest);
+            if (rateResult.)
+            {
+                Redirect(Request.Path);
+            }
         }
     }
 }

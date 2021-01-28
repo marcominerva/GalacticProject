@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AwesomeBackend.Shared.Models.Requests
 {
@@ -8,5 +9,7 @@ namespace AwesomeBackend.Shared.Models.Requests
         public int Score { get; set; }
 
         public string Comment { get; set; }
+
+        public DateTime VisitedAt { get; set; } = DateTime.Now;
     }
 }

@@ -1,4 +1,5 @@
-﻿using AwesomeBackend.Shared.Models.Responses;
+﻿using AwesomeBackend.Shared.Models.Requests;
+using AwesomeBackend.Shared.Models.Responses;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -32,22 +33,37 @@ namespace AwesomeFrontend.BusinessLayer.Services
             return null;
         }
 
-        public async Task<Restaurant> GetAsync(Guid id)
+        public async Task<(Restaurant Restaurant, ListResult<Rating> Ratings)> GetAsync(Guid id)
         {
             try
             {
-                var response = await httpClient.GetAsync($"restaurants/{id}");
-                if (response.IsSuccessStatusCode)
+                var restaurantResponse = await httpClient.GetAsync($"restaurants/{id}");
+                var ratingsResponse = await httpClient.GetAsync($"restaurants/{id}/ratings");
+
+                if (restaurantResponse.IsSuccessStatusCode && ratingsResponse.IsSuccessStatusCode)
                 {
-                    var restaurant = await response.Content.ReadFromJsonAsync<Restaurant>();
-                    return restaurant;
+                    var restaurant = await restaurantResponse.Content.ReadFromJsonAsync<Restaurant>();
+                    var ratings = await ratingsResponse.Content.ReadFromJsonAsync<ListResult<Rating>>();
+                    return (restaurant, ratings);
                 }
             }
             catch
             {
             }
 
-            return null;
+            return (null, null);
+        }
+
+        public async Task<(bool Success, ProblemDetails Error)> RateAsync(Guid id, RatingRequest request)
+        {
+            var response = await httpClient.PostAsJsonAsync($"restaurants/{id}/ratings", request);
+            if (response.IsSuccessStatusCode)
+            {
+                return (true, null);
+            }
+
+            var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+            return (false, problemDetails);
         }
     }
 }

@@ -1,5 +1,6 @@
 using AwesomeBackend.BusinessLayer.Services.Common;
 using AwesomeBackend.DataAccessLayer;
+using AwesomeBackend.Shared.Models.Requests;
 using AwesomeBackend.Shared.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -40,15 +41,15 @@ namespace AwesomeBackend.BusinessLayer.Services
             return new ListResult<Rating>(data.Take(itemsPerPage), totalCount, data.Count > itemsPerPage);
         }
 
-        public async Task<NewRating> RateAsync(Guid restaurantId, double score, string comment)
+        public async Task<NewRating> RateAsync(Guid restaurantId, RatingRequest rating)
         {
             // Saves the new rating to the database.
             var dbRating = new Entities.Rating
             {
                 RestaurantId = restaurantId,
-                Score = score,
-                Comment = comment,
-                Date = DateTime.UtcNow
+                Score = rating.Score,
+                Comment = rating.Comment,
+                Date = rating.VisitedAt
             };
 
             DataContext.Insert(dbRating);

@@ -28,14 +28,15 @@
                             <h5 class="mt-0">@restaurant.Name</h5>
                             @if (restaurant.RatingScore.HasValue)
                             {
-                                <small>@restaurant.RatingScore</small>
+                                <p>
+                                    <small>@restaurant.RatingScore</small> <i class="bi-star-fill"></i> 
+                                </p>
                             }
                         </div>
                         <p><i class="bi-map"></i> @restaurant.Address.ToString()</p>
                         <p><i class="bi-telephone"></i> @restaurant.PhoneNumber</p>
                         <p><i class="bi-mailbox"></i> @restaurant.Email</p>
                     </div>
-                    
                 </div>
             </a>
         }

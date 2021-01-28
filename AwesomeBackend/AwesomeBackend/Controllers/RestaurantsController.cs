@@ -90,7 +90,7 @@ namespace AwesomeBackend.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<NewRating>> Rate([FromRoute(Name = "id")] Guid restaurantId, RatingRequest rating)
         {
-            var result = await ratingsService.RateAsync(restaurantId, rating.Score, rating.Comment);
+            var result = await ratingsService.RateAsync(restaurantId, rating);
             return result;
         }
     }

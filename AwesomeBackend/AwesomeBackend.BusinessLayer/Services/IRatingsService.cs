@@ -1,4 +1,5 @@
-﻿using AwesomeBackend.Shared.Models.Responses;
+﻿using AwesomeBackend.Shared.Models.Requests;
+using AwesomeBackend.Shared.Models.Responses;
 using System;
 using System.Threading.Tasks;
 
@@ -8,6 +9,6 @@ namespace AwesomeBackend.BusinessLayer.Services
     {
         Task<ListResult<Rating>> GetAsync(Guid restaurantId, int pageIndex, int itemsPerPage);
 
-        Task<NewRating> RateAsync(Guid restaurantId, double score, string comment);
+        Task<NewRating> RateAsync(Guid restaurantId, RatingRequest rating);
     }
 }

@@ -36,9 +36,7 @@ namespace AwesomeBackend.DataAccessLayer
 
         public void Insert<T>(T entity) where T : class => Set<T>().Add(entity);
 
-        void IApplicationDbContext.Update<T>(T entity)
-        {
-        }
+        void IApplicationDbContext.Update<T>(T entity) => Set<T>().Update(entity);
 
         public void Delete<T>(T entity) where T : class => Set<T>().Remove(entity);
 
