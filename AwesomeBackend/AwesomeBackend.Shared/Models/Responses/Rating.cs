@@ -6,7 +6,7 @@ namespace AwesomeBackend.Shared.Models.Responses
     {
         public Guid Id { get; set; }
 
-        public double RatingScore { get; set; }
+        public double Score { get; set; }
 
         public string Comment { get; set; }
 
