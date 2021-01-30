@@ -1,8 +1,13 @@
-﻿using AwesomeBackend.Shared.Models.Requests;
+﻿using AwesomeBackend.Shared.Extensions;
+using AwesomeBackend.Shared.Models.Requests;
 using AwesomeBackend.Shared.Models.Responses;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
+using System.Net.Mime;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -10,6 +15,8 @@ namespace AwesomeFrontend.BusinessLayer.Services
 {
     public class RestaurantsService : IRestaurantsService
     {
+        private static readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web);
+
         private readonly HttpClient httpClient;
 
         public RestaurantsService(HttpClient httpClient)
@@ -22,7 +29,9 @@ namespace AwesomeFrontend.BusinessLayer.Services
                 var response = await httpClient.GetAsync($"restaurants?q={HttpUtility.UrlEncode(searchText)}");
                 if (response.IsSuccessStatusCode)
                 {
-                    var restaurants = await response.Content.ReadFromJsonAsync<ListResult<Restaurant>>();
+                    var json = await response.Content.ReadAsStringAsync();
+                    var restaurants = JsonSerializer.Deserialize<ListResult<Restaurant>>(json, jsonSerializerOptions);
+
                     return restaurants;
                 }
             }
@@ -42,8 +51,12 @@ namespace AwesomeFrontend.BusinessLayer.Services
 
                 if (restaurantResponse.IsSuccessStatusCode && ratingsResponse.IsSuccessStatusCode)
                 {
-                    var restaurant = await restaurantResponse.Content.ReadFromJsonAsync<Restaurant>();
-                    var ratings = await ratingsResponse.Content.ReadFromJsonAsync<ListResult<Rating>>();
+                    var json = await restaurantResponse.Content.ReadAsStringAsync();
+                    var restaurant = JsonSerializer.Deserialize<Restaurant>(json, jsonSerializerOptions);
+
+                    json = await ratingsResponse.Content.ReadAsStringAsync();
+                    var ratings = JsonSerializer.Deserialize<ListResult<Rating>>(json, jsonSerializerOptions);
+
                     return (restaurant, ratings);
                 }
             }
@@ -54,16 +67,22 @@ namespace AwesomeFrontend.BusinessLayer.Services
             return (null, null);
         }
 
-        public async Task<(bool Success, ProblemDetails Error)> RateAsync(Guid id, RatingRequest request)
+        public async Task<(bool Success, IEnumerable<string> Errors)> RateAsync(Guid id, RatingRequest request)
         {
-            var response = await httpClient.PostAsJsonAsync($"restaurants/{id}/ratings", request);
+            var json = JsonSerializer.Serialize(request, jsonSerializerOptions);
+            var content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            var response = await httpClient.PostAsync($"restaurants/{id}/ratings", content);
             if (response.IsSuccessStatusCode)
             {
                 return (true, null);
             }
 
-            var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
-            return (false, problemDetails);
+            json = await response.Content.ReadAsStringAsync();
+            var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(json, jsonSerializerOptions);
+            var errors = problemDetails.GetErrors().SelectMany(e => e.Value);
+
+            return (false, errors);
         }
     }
 }

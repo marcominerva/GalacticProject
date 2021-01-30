@@ -33,29 +33,41 @@ namespace AwesomeFrontend.Pages
         {
             if (id != Guid.Empty)
             {
-                (Restaurant, Ratings) = await restaurantsService.GetAsync(id);
-
-                RatingScores = new List<SelectListItem>() { new("(select)", "-1") }.Union(
-                                    Enumerable.Range(1, 5).Select(x =>
-                                       new SelectListItem
-                                       {
-                                           Value = x.ToString(),
-                                           Text = x.ToString()
-                                       }));
-
+                await GetPageDataAsync(id);
                 return Page();
             }
 
             return NotFound();
         }
 
+        private async Task GetPageDataAsync(Guid id)
+        {
+            (Restaurant, Ratings) = await restaurantsService.GetAsync(id);
+
+            RatingScores = new List<SelectListItem>() { new("(select)", "-1") }.Union(
+                                Enumerable.Range(1, 5).Select(x =>
+                                   new SelectListItem
+                                   {
+                                       Value = x.ToString(),
+                                       Text = x.ToString()
+                                   }));
+        }
+
         public async Task<IActionResult> OnPostAsync(Guid id)
         {
             var rateResult = await restaurantsService.RateAsync(id, RatingRequest);
-            if (rateResult.)
+            if (rateResult.Success)
             {
-                Redirect(Request.Path);
+                return Redirect(Request.Path);
             }
+
+            foreach (var error in rateResult.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error);
+            }
+
+            await GetPageDataAsync(id);
+            return Page();
         }
     }
 }

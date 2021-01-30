@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace AwesomeBackend.Shared.Models.Responses
 {
@@ -14,6 +15,7 @@ namespace AwesomeBackend.Shared.Models.Responses
 
         public string Instance { get; set; }
 
-        public IDictionary<string, object> Extensions { get; }
+        [JsonExtensionData]
+        public IDictionary<string, object> Extensions { get; set; }
     }
 }
