@@ -1,4 +1,3 @@
-using AwesomeBackend.BusinessLayer.Services.Common;
 using AwesomeBackend.DataAccessLayer;
 using AwesomeBackend.Shared.Models.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -10,19 +9,20 @@ using Entities = AwesomeBackend.DataAccessLayer.Entities;
 
 namespace AwesomeBackend.BusinessLayer.Services
 {
-    public class RestaurantsService : BaseService, IRestaurantsService
+    public class RestaurantsService : IRestaurantsService
     {
+        private readonly IApplicationDbContext dataContext;
+        private readonly ILogger logger;
+
         public RestaurantsService(IApplicationDbContext dataContext, ILogger<RestaurantsService> logger)
-            : base(dataContext, logger)
-        {
-        }
+            => (this.dataContext, this.logger) = (dataContext, logger);
 
         public async Task<Restaurant> GetAsync(Guid id)
         {
-            var dbRestaurant = await DataContext.GetData<Entities.Restaurant>().Include(r => r.Ratings).FirstOrDefaultAsync(v => v.Id == id);
+            var dbRestaurant = await dataContext.GetData<Entities.Restaurant>().Include(r => r.Ratings).FirstOrDefaultAsync(v => v.Id == id);
             if (dbRestaurant == null)
             {
-                Logger.LogInformation("Unable to find restaurant with Id {RestaturantId}", id);
+                logger.LogInformation("Unable to find restaurant with Id {RestaturantId}", id);
                 return null;
             }
 
@@ -32,14 +32,14 @@ namespace AwesomeBackend.BusinessLayer.Services
 
         public async Task<ListResult<Restaurant>> GetAsync(string searchText, int pageIndex, int itemsPerPage)
         {
-            Logger.LogDebug("Trying to retrieve a max of {ItemsCount} restaurants using {SearchText} query...", itemsPerPage, searchText);
+            logger.LogDebug("Trying to retrieve a max of {ItemsCount} restaurants using {SearchText} query...", itemsPerPage, searchText);
 
-            var query = DataContext.GetData<Entities.Restaurant>()
+            var query = dataContext.GetData<Entities.Restaurant>()
                 .Where(r => searchText == null || r.Name.Contains(searchText) || r.Address.Location.Contains(searchText));
 
             var totalCount = await query.LongCountAsync();
 
-            Logger.LogDebug("{ItemsCount} restaurants found", totalCount);
+            logger.LogDebug("{ItemsCount} restaurants found", totalCount);
 
             var data = await query.Include(r => r.Ratings)
                 .OrderBy(r => r.Name)

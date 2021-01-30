@@ -1,4 +1,3 @@
-using AwesomeBackend.BusinessLayer.Services.Common;
 using AwesomeBackend.DataAccessLayer;
 using AwesomeBackend.Shared.Models.Requests;
 using AwesomeBackend.Shared.Models.Responses;
@@ -11,21 +10,22 @@ using Entities = AwesomeBackend.DataAccessLayer.Entities;
 
 namespace AwesomeBackend.BusinessLayer.Services
 {
-    public class RatingsService : BaseService, IRatingsService
+    public class RatingsService : IRatingsService
     {
-        public RatingsService(IApplicationDbContext dataContext, ILogger<RatingsService> logger)
-            : base(dataContext, logger)
-        {
-        }
+        private readonly IApplicationDbContext dataContext;
+        private readonly ILogger logger;
+
+        public RatingsService(IApplicationDbContext dataContext, ILogger<RestaurantsService> logger)
+            => (this.dataContext, this.logger) = (dataContext, logger);
 
         public async Task<ListResult<Rating>> GetAsync(Guid restaurantId, int pageIndex, int itemsPerPage)
         {
-            Logger.LogDebug("Trying to retrieve {ItemsCount} ratings for restaurants with Id {RestaurantId}...", itemsPerPage, restaurantId);
+            logger.LogDebug("Trying to retrieve {ItemsCount} ratings for restaurants with Id {RestaurantId}...", itemsPerPage, restaurantId);
 
-            var query = DataContext.GetData<Entities.Rating>().Where(r => r.RestaurantId == restaurantId);
+            var query = dataContext.GetData<Entities.Rating>().Where(r => r.RestaurantId == restaurantId);
             var totalCount = await query.LongCountAsync();
 
-            Logger.LogDebug("Found {ItemsCounts} ratings", totalCount);
+            logger.LogDebug("Found {ItemsCounts} ratings", totalCount);
 
             var data = await query
                 .OrderByDescending(s => s.Date)
@@ -52,11 +52,11 @@ namespace AwesomeBackend.BusinessLayer.Services
                 Date = rating.VisitedAt
             };
 
-            DataContext.Insert(dbRating);
-            await DataContext.SaveAsync();
+            dataContext.Insert(dbRating);
+            await dataContext.SaveAsync();
 
             // Retrieves the new average rating for the restaurant.
-            var averageScore = await DataContext.GetData<Entities.Rating>().Where(r => r.RestaurantId == restaurantId).AverageAsync(r => r.Score);
+            var averageScore = await dataContext.GetData<Entities.Rating>().Where(r => r.RestaurantId == restaurantId).AverageAsync(r => r.Score);
             var result = new NewRating(restaurantId, Math.Round(averageScore, 2));
             return result;
         }
