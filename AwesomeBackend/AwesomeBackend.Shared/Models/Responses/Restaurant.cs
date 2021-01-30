@@ -18,7 +18,7 @@ namespace AwesomeBackend.Shared.Models.Responses
 
         public string WebSite { get; set; }
 
-        public int? RatingsCount { get; set; }
+        public int RatingsCount { get; set; }
 
         public double? RatingScore { get; set; }
     }
