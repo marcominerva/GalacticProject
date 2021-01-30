@@ -33,7 +33,7 @@ namespace AwesomeBackend.BusinessLayer.Services
                 .Select(dbRating => new Rating
                 {
                     Id = dbRating.Id,
-                    RatingScore = dbRating.Score,
+                    Score = dbRating.Score,
                     Comment = dbRating.Comment,
                     Date = dbRating.Date
                 }).ToListAsync();
