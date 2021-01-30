@@ -19,6 +19,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Mime;
 using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace AwesomeBackend
@@ -175,7 +176,7 @@ namespace AwesomeBackend
                    {
                        ResponseWriter = async (context, report) =>
                        {
-                           var result = System.Text.Json.JsonSerializer.Serialize(
+                           var result = JsonSerializer.Serialize(
                                new
                                {
                                    status = report.Status.ToString(),
