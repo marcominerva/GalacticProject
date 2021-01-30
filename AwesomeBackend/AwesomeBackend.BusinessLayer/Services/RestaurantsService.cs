@@ -68,8 +68,8 @@ namespace AwesomeBackend.BusinessLayer.Services
                 ImageUrl = dbRestaurant.ImageUrl,
                 PhoneNumber = dbRestaurant.PhoneNumber,
                 WebSite = dbRestaurant.WebSite,
-                RatingsCount = dbRestaurant.Ratings.Count,
-                RatingScore = dbRestaurant.Ratings.Count > 0 ? Math.Round(dbRestaurant.Ratings.Select(r => r.Score).DefaultIfEmpty(0).Average(), 2) : null
+                RatingsCount = dbRestaurant.Ratings?.Count ?? 0,
+                RatingScore = dbRestaurant.Ratings?.Count > 0 ? Math.Round(dbRestaurant.Ratings.Select(r => r.Score).Average(), 2) : null
             };
         }
     }
