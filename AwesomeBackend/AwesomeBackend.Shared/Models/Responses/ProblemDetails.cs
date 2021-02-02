@@ -5,17 +5,19 @@ namespace AwesomeBackend.Shared.Models.Responses
 {
     public class ProblemDetails
     {
-        public string Type { get; set; }
+        public string Type { get; init; }
 
-        public string Title { get; set; }
+        public string Title { get; init; }
 
-        public int? Status { get; set; }
+        public int? Status { get; init; }
 
-        public string Detail { get; set; }
+        public string Detail { get; init; }
 
-        public string Instance { get; set; }
+        public string Instance { get; init; }
 
         [JsonExtensionData]
-        public IDictionary<string, object> Extensions { get; set; }
+        public IDictionary<string, object> Extensions { get; init; }
+
+        public Dictionary<string, string[]> Errors { get; init; }
     }
 }
