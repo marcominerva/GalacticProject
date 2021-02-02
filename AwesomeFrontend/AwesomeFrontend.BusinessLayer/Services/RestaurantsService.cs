@@ -1,5 +1,4 @@
-﻿using AwesomeBackend.Shared.Extensions;
-using AwesomeBackend.Shared.Models.Requests;
+﻿using AwesomeBackend.Shared.Models.Requests;
 using AwesomeBackend.Shared.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -80,7 +79,7 @@ namespace AwesomeFrontend.BusinessLayer.Services
 
             json = await response.Content.ReadAsStringAsync();
             var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(json, jsonSerializerOptions);
-            var errors = problemDetails.GetErrors().SelectMany(e => e.Value);
+            var errors = problemDetails.Errors.SelectMany(e => e.Value);
 
             return (false, errors);
         }
