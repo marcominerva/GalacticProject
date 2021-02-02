@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
 using Refit;
 using System;
 using System.Text.Json;
@@ -33,7 +34,13 @@ namespace AwesomeFrontend
             .ConfigureHttpClient(client =>
             {
                 client.BaseAddress = new Uri(settings.ServiceUrl);
-            });
+            })
+            .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
+            {
+                TimeSpan.FromSeconds(1),
+                TimeSpan.FromSeconds(5),
+                TimeSpan.FromSeconds(10)
+            }));
 
             services.AddScoped<IRestaurantsService, RestaurantsService>();
         }
