@@ -1,6 +1,9 @@
 using AwesomeFrontend.BusinessLayer.RemoteServices;
 using AwesomeFrontend.BusinessLayer.Services;
 using AwesomeFrontend.BusinessLayer.Settings;
+using CorrelationId;
+using CorrelationId.DependencyInjection;
+using CorrelationId.HttpClient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +38,7 @@ namespace AwesomeFrontend
             {
                 client.BaseAddress = new Uri(settings.ServiceUrl);
             })
+            .AddCorrelationIdForwarding()
             .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
             {
                 TimeSpan.FromSeconds(1),
@@ -43,6 +47,12 @@ namespace AwesomeFrontend
             }));
 
             services.AddScoped<IRestaurantsService, RestaurantsService>();
+
+            services.AddDefaultCorrelationId(options =>
+            {
+                options.AddToLoggingScope = true;
+                options.UpdateTraceIdentifier = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +71,8 @@ namespace AwesomeFrontend
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseCorrelationId();
 
             app.UseRouting();
 
