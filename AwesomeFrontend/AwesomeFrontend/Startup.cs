@@ -1,3 +1,4 @@
+using AwesomeFrontend.BusinessLayer.RemoteServices;
 using AwesomeFrontend.BusinessLayer.Services;
 using AwesomeFrontend.BusinessLayer.Settings;
 using Microsoft.AspNetCore.Builder;
@@ -5,7 +6,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
+using Refit;
 using System;
+using System.Text.Json;
 
 namespace AwesomeFrontend
 {
@@ -23,10 +27,22 @@ namespace AwesomeFrontend
 
             services.AddRazorPages();
 
-            services.AddHttpClient<IRestaurantsService, RestaurantsService>(client =>
+            services.AddRefitClient<IAwesomeBackendApi>(new RefitSettings
+            {
+                ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions(JsonSerializerDefaults.Web))
+            })
+            .ConfigureHttpClient(client =>
             {
                 client.BaseAddress = new Uri(settings.ServiceUrl);
-            });
+            })
+            .AddTransientHttpErrorPolicy(builder => builder.WaitAndRetryAsync(new[]
+            {
+                TimeSpan.FromSeconds(1),
+                TimeSpan.FromSeconds(5),
+                TimeSpan.FromSeconds(10)
+            }));
+
+            services.AddScoped<IRestaurantsService, RestaurantsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

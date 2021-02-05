@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Refit" Version="5.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\AwesomeBackend\AwesomeBackend.Shared\AwesomeBackend.Shared.csproj" />
   </ItemGroup>
 
