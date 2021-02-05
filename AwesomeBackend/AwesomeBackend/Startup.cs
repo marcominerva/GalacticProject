@@ -1,6 +1,8 @@
 ﻿using AwesomeBackend.BusinessLayer.Services;
 using AwesomeBackend.DataAccessLayer;
 using AwesomeBackend.Documentation;
+using CorrelationId;
+using CorrelationId.DependencyInjection;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -129,6 +131,12 @@ namespace AwesomeBackend
             // Add service specific services.
             services.AddScoped<IRestaurantsService, RestaurantsService>();
             services.AddScoped<IRatingsService, RatingsService>();
+
+            services.AddDefaultCorrelationId(options =>
+            {
+                options.AddToLoggingScope = true;
+                options.UpdateTraceIdentifier = true;
+            });
         }
 
         /// <summary>
@@ -159,6 +167,7 @@ namespace AwesomeBackend
                 }
             });
 
+            app.UseCorrelationId();
             app.UseSerilogRequestLogging();
 
             // Add the EndpointRoutingMiddleware.
