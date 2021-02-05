@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Options;
+using Serilog;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.IO;
@@ -157,6 +158,8 @@ namespace AwesomeBackend
                     options.RoutePrefix = string.Empty;
                 }
             });
+
+            app.UseSerilogRequestLogging();
 
             // Add the EndpointRoutingMiddleware.
             app.UseRouting();

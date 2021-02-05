@@ -22,7 +22,7 @@ namespace AwesomeBackend.BusinessLayer.Services
             var dbRestaurant = await dataContext.GetData<Entities.Restaurant>().Include(r => r.Ratings).FirstOrDefaultAsync(v => v.Id == id);
             if (dbRestaurant == null)
             {
-                logger.LogInformation("Unable to find restaurant with Id {RestaturantId}", id);
+                logger.LogWarning("Unable to find restaurant with Id {RestaturantId}", id);
                 return null;
             }
 
