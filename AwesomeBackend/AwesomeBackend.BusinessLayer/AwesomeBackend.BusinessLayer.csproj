@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="FluentValidation" Version="9.5.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AwesomeBackend.DataAccessLayer\AwesomeBackend.DataAccessLayer.csproj" />
     <ProjectReference Include="..\AwesomeBackend.Shared\AwesomeBackend.Shared.csproj" />
   </ItemGroup>

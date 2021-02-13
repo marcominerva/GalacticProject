@@ -1,6 +1,9 @@
-﻿using AwesomeBackend.BusinessLayer.Services;
+﻿using AwesomeBackend.BusinessLayer.Mappers;
+using AwesomeBackend.BusinessLayer.Services;
+using AwesomeBackend.BusinessLayer.Validations;
 using AwesomeBackend.DataAccessLayer;
 using AwesomeBackend.Documentation;
+using FluentValidation.AspNetCore;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -51,13 +54,17 @@ namespace AwesomeBackend
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
-                });
+                })
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<RatingRequestValidator>());
+
+            services.AddAutoMapper(typeof(RestaurantMapperProfile).Assembly);
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
             {
                 options.UseSqlServer(connectionString, providerOptions =>
                 {
+                    providerOptions.EnableRetryOnFailure(3, TimeSpan.FromSeconds(1), null);
                     providerOptions.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
                 });
             });

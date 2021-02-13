@@ -1,8 +1,10 @@
+using AutoMapper;
 using AwesomeBackend.DataAccessLayer;
 using AwesomeBackend.Shared.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entities = AwesomeBackend.DataAccessLayer.Entities;
@@ -13,9 +15,11 @@ namespace AwesomeBackend.BusinessLayer.Services
     {
         private readonly IApplicationDbContext dataContext;
         private readonly ILogger logger;
+        private readonly IMapper mapper;
 
-        public RestaurantsService(IApplicationDbContext dataContext, ILogger<RestaurantsService> logger)
-            => (this.dataContext, this.logger) = (dataContext, logger);
+        public RestaurantsService(IApplicationDbContext dataContext, ILogger<RestaurantsService> logger,
+            IMapper mapper)
+            => (this.dataContext, this.logger, this.mapper) = (dataContext, logger, mapper);
 
         public async Task<Restaurant> GetAsync(Guid id)
         {
@@ -26,7 +30,7 @@ namespace AwesomeBackend.BusinessLayer.Services
                 return null;
             }
 
-            var restaurant = CreateRestaurantDto(dbRestaurant);
+            var restaurant = mapper.Map<Restaurant>(dbRestaurant);
             return restaurant;
         }
 
@@ -44,33 +48,11 @@ namespace AwesomeBackend.BusinessLayer.Services
             var data = await query.Include(r => r.Ratings)
                 .OrderBy(r => r.Name)
                 //.OrderByDescending(r => r.Ratings.Select(rating => rating.Score).DefaultIfEmpty(0).Average())
-                .Skip(pageIndex * itemsPerPage).Take(itemsPerPage + 1)      // Try to retrieve an element more than the requested number to check whether there are more data.
-                .Select(dbRestaurant => CreateRestaurantDto(dbRestaurant))
+                .Skip(pageIndex * itemsPerPage).Take(itemsPerPage + 1)      // Try to retrieve an element more than the requested number to check whether there are more data.                
                 .ToListAsync();
 
-            return new ListResult<Restaurant>(data.Take(itemsPerPage), totalCount, data.Count > itemsPerPage);
-        }
-
-        private static Restaurant CreateRestaurantDto(Entities.Restaurant dbRestaurant)
-        {
-            return new Restaurant
-            {
-                Id = dbRestaurant.Id,
-                Name = dbRestaurant.Name,
-                Address = new Address
-                {
-                    Location = dbRestaurant.Address.Location,
-                    PostalCode = dbRestaurant.Address.PostalCode,
-                    Province = dbRestaurant.Address.Province,
-                    Street = dbRestaurant.Address.Street
-                },
-                Email = dbRestaurant.Email,
-                ImageUrl = dbRestaurant.ImageUrl,
-                PhoneNumber = dbRestaurant.PhoneNumber,
-                WebSite = dbRestaurant.WebSite,
-                RatingsCount = dbRestaurant.Ratings?.Count ?? 0,
-                RatingScore = dbRestaurant.Ratings?.Count > 0 ? Math.Round(dbRestaurant.Ratings.Select(r => r.Score).Average(), 2) : null
-            };
+            var restaurants = mapper.Map<IEnumerable<Restaurant>>(data);
+            return new ListResult<Restaurant>(restaurants.Take(itemsPerPage), totalCount, restaurants.Count() > itemsPerPage);
         }
     }
 }

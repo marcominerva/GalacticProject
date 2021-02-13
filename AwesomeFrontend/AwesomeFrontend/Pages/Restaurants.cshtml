@@ -28,7 +28,9 @@
             <li class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1"><strong>@rating.Score</strong> <i class="bi-star-fill"></i></h5>
-                    <small>@rating.Date.ToLongDateString()</small>
+                    <span title="@rating.Date.ToLongDateString()">
+                        <small>@rating.Date.Humanize(dateToCompareAgainst: DateTime.Now.Date)</small>
+                    </span>
                 </div>
                 <p class="mb-1">@rating.Comment</p>
             </li>
