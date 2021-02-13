@@ -1,0 +1,65 @@
+﻿@page "{id:guid}"
+@model RestaurantModel
+@{
+    ViewData["Title"] = Model.Restaurant.Name;
+}
+
+<div class="media">
+    <img src="@Model.Restaurant.ImageUrl" class="mr-3 restaurant-image rounded" alt="@Model.Restaurant.Name">
+    <div class="media-body">
+        <div class="d-flex w-100 justify-content-between">
+            <h3 class="mt-0">@Model.Restaurant.Name</h3>
+            @if (Model.Restaurant.RatingScore.HasValue)
+            {
+                <h3>@Model.Restaurant.RatingScore</h3>
+            }
+        </div>
+        <p><i class="bi-map"></i> @Model.Restaurant.Address.ToString()</p>
+        <p><a href="tel:@Model.Restaurant.PhoneNumber"><i class="bi-telephone"></i> @Model.Restaurant.PhoneNumber</a></p>
+        <p><a href="mailto:@Model.Restaurant.Email"><i class="bi-mailbox"></i> @Model.Restaurant.Email</a></p>
+    </div>
+</div>
+
+@if (Model.Ratings.TotalCount > 0)
+{
+    <ul class="list-group list-group-flush">
+        @foreach (var rating in Model.Ratings.Content)
+        {
+            <li class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1"><strong>@rating.Score</strong> <i class="bi-star-fill"></i></h5>
+                    <span title="@rating.Date.ToLongDateString()">
+                        <small>@rating.Date.Humanize(dateToCompareAgainst: DateTime.Now.Date)</small>
+                    </span>
+                </div>
+                <p class="mb-1">@rating.Comment</p>
+            </li>
+        }
+    </ul>
+}
+
+<hr />
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group row">
+        <label asp-for="RatingRequest.VisitedAt" class="col-sm-2 col-form-label">Date</label>
+        <div class="col-sm-4">
+            <input type="date" class="form-control" asp-for="RatingRequest.VisitedAt">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="RatingRequest.Score" class="col-sm-2 col-form-label">Your rating score</label>
+        <div class="col-sm-4">
+            <select class="custom-select" asp-for="RatingRequest.Score" asp-items="Model.RatingScores"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="RatingRequest.Comment">Comment</label>
+        <textarea class="form-control" asp-for="RatingRequest.Comment" rows="3"></textarea>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Send Rating</button>
+        </div>
+    </div>
+</form>

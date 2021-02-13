@@ -1,0 +1,52 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<form method="get">
+    <div class="form-row align-items-center justify-content-center mt-5">
+        <div class="col-4">
+            <input type="text" name="q" class="form-control" placeholder="Search for a restaurant or a location" asp-for="@Model.SearchText">
+        </div>
+        <div class="col-auto ml-2">
+            <button type="submit" class="btn btn-primary"><i class="bi-search"></i> Search</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Restaurants != null)
+{
+    <div class="list-group mt-5">
+        @foreach (var restaurant in Model.Restaurants.Content)
+        {
+            <a asp-page="Restaurants" asp-route-id="@restaurant.Id" class="list-group-item list-group-item-action">
+                <div class="media">
+                    <img src="@restaurant.ImageUrl" class="mr-3 restaurant-image rounded" alt="@restaurant.Name">
+                    <div class="media-body">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mt-0">@restaurant.Name</h5>
+                            @if (restaurant.RatingScore.HasValue)
+                            {
+                                <p>
+                                    <small>@restaurant.RatingScore</small> <i class="bi-star-fill"></i> 
+                                </p>
+                            }
+                        </div>
+                        <p><i class="bi-map"></i> @restaurant.Address.ToString()</p>
+                        <p><i class="bi-telephone"></i> @restaurant.PhoneNumber</p>
+                        <p><i class="bi-mailbox"></i> @restaurant.Email</p>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+}
+else if (!string.IsNullOrWhiteSpace(Model.SearchText))
+{
+    /* There is a query string, but no results: there was a problem */
+    <div class="alert alert-danger mt-5" role="alert">
+        Unable to retrieve restaurants
+    </div>
+}
+
