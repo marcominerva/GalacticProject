@@ -33,16 +33,16 @@ namespace AwesomeBackend
     public class Startup
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Startup"/> class.
-        /// </summary>
-        /// <param name="configuration">The current configuration.</param>
-        public Startup(IConfiguration configuration) => Configuration = configuration;
-
-        /// <summary>
         /// Gets the current configuration.
         /// </summary>
         /// <value>The current application configuration.</value>
         public IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="configuration">The current configuration.</param>
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         /// <summary>
         /// This method gets called by the runtime. Configures services for the application.
