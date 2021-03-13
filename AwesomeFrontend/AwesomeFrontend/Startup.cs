@@ -24,7 +24,7 @@ namespace AwesomeFrontend
             var appSettingsSection = Configuration.GetSection(nameof(AppSettings));
             var settings = appSettingsSection.Get<AppSettings>();
 
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
 
             services.AddRefitClient<IAwesomeBackendApi>()
                 .ConfigureHttpClient(client =>

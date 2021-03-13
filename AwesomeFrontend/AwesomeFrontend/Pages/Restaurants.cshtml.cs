@@ -21,10 +21,10 @@ namespace AwesomeFrontend.Pages
 
         public ListResult<Rating> Ratings { get; set; }
 
+        public IEnumerable<SelectListItem> RatingScores { get; set; }
+
         [BindProperty]
         public RatingRequest RatingRequest { get; set; } = new RatingRequest();
-
-        public IEnumerable<SelectListItem> RatingScores { get; set; }
 
         public RestaurantModel(ILogger<RestaurantModel> logger, IRestaurantsService restaurantsService)
             => (this.logger, this.restaurantsService) = (logger, restaurantsService);
