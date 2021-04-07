@@ -1,12 +1,12 @@
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using AwesomeBackend.DataAccessLayer;
 using AwesomeBackend.Shared.Models.Responses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Entities = AwesomeBackend.DataAccessLayer.Entities;
 
 namespace AwesomeBackend.BusinessLayer.Services
@@ -39,7 +39,7 @@ namespace AwesomeBackend.BusinessLayer.Services
                 .ProjectTo<Restaurant>(mapper.ConfigurationProvider)
                 .ToListAsync();
 
-            return new ListResult<Restaurant>(restaurants.Take(itemsPerPage), totalCount, restaurants.Count() > itemsPerPage);
+            return new ListResult<Restaurant>(restaurants.Take(itemsPerPage), totalCount, restaurants.Count > itemsPerPage);
         }
 
         public async Task<Restaurant> GetAsync(Guid id)
